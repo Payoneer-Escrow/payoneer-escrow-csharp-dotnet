@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp_NetFramework462_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp_NetFramework461_NetStandard16", "ExampleApp_NetFramework461_NetStandard16\ExampleApp_NetFramework461_NetStandard16.csproj", "{661258E3-A8BD-4B4C-BE76-7095D37FD2C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp_NetCore20_NetStandard20", "ExampleApp_NetCore20_NetStandard20\ExampleApp_NetCore20_NetStandard20.csproj", "{DEA88210-64E2-43B0-A504-8CBDB4524D2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleApp_NetCore10_NetStandard12-20", "ExampleApp_NetCore10_NetStandard12-20\ExampleApp_NetCore10_NetStandard12-20.csproj", "{B43D37AD-E45F-46E1-A913-E567E7FFC43C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{661258E3-A8BD-4B4C-BE76-7095D37FD2C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{661258E3-A8BD-4B4C-BE76-7095D37FD2C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{661258E3-A8BD-4B4C-BE76-7095D37FD2C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEA88210-64E2-43B0-A504-8CBDB4524D2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA88210-64E2-43B0-A504-8CBDB4524D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA88210-64E2-43B0-A504-8CBDB4524D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA88210-64E2-43B0-A504-8CBDB4524D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B43D37AD-E45F-46E1-A913-E567E7FFC43C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B43D37AD-E45F-46E1-A913-E567E7FFC43C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B43D37AD-E45F-46E1-A913-E567E7FFC43C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B43D37AD-E45F-46E1-A913-E567E7FFC43C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
