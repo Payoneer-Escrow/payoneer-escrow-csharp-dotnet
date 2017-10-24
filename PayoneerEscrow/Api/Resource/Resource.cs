@@ -16,7 +16,7 @@
 		/// <summary>
 		/// The response received from a request.
 		/// </summary>
-		protected string api_response = null;
+		protected dynamic api_response = null;
 		
 		/// <summary>
 		/// The resource's root URI.
@@ -64,7 +64,7 @@
 		/// Get all objects (waits for the task to complete).
 		/// </summary>
 		/// <returns>Returns a response. Successful requests will all objects.</returns>
-		public string All() {
+		public dynamic All() {
 			this.Request("GET", this.Uri()).Wait();
 			return this.api_response;
 		}
@@ -73,7 +73,7 @@
 		/// Get a single object (waits for the task to complete).
 		/// </summary>
 		/// <returns>Returns a response. Successfull requests will return a single object.</returns>
-		public string Get(string object_id) {
+		public dynamic Get(string object_id) {
 			this.Request("GET", this.Uri(object_id)).Wait();
 			return this.api_response;
 		}
@@ -141,6 +141,7 @@
 			// Set this.api_response to the response received from the API.
 			// The caller will return this.api_response;
 			this.api_response = await httpResponse.Content.ReadAsStringAsync();
+			this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
 		}
 
 		/// <summary>
