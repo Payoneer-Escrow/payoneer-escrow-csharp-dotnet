@@ -55,7 +55,7 @@ namespace ExampleApp_NetFramework46_NetStandard13
 			 * This example shows that a Dictionary can be used
 			 */
 			Console.WriteLine("\n\nCreate an order...\n\n");
-			Dictionary<string, string> params_orderCreate = new Dictionary<string, string>{
+			Dictionary<string, string> params_orderCreate = new Dictionary<string, string> {
 				{ "seller_id", "seller_user_id" },
 				{ "buyer_id",  "buyer_user_id" },
 				{ "amount",    "10000" },
