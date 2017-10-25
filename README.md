@@ -231,8 +231,9 @@ client.Accounts().Orders("account_id").Disputes("order_id").Offers("dispute_id")
 /**
  * Some of the resource endpoints support Create/Update POST operations, and
  * this client aims to support those as well. POST operations use the
- * Newtonsoft.Json package to serialize objects as JSON. You can pass your POST
- * data as a Dictionary, JObject, or even an anonymous object.
+ * Newtonsoft.Json package to serialize objects as a JSON string. You can pass
+ * your POST data as a Dictionary, JObject, or even an anonymous object. These
+ * objects are serialized in PayoneerEscrow.Api.Resource.Resource.
  */
 
 /**
