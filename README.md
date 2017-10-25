@@ -36,9 +36,9 @@ Current package version: 1.0.0
 ## Installation
 
 You can install using:
-* [NuGet Package Manager](#nugetpackagemanager)
-* [NuGet Gallery](#nugetgallery) (to download raw `nupkg` file)
-* [.NET Core command-line interface (CLI)](#dotnetcorecommandlineinterfacecli)
+* [NuGet Package Manager](#nuget-package-manager)
+* [NuGet Gallery](#nuget-gallery) (to download raw `nupkg` file)
+* [.NET Core command-line interface (CLI)](#net-core-command-line-interface-cli)
 * [Git](#git)
 
 ### NuGet Package Manager
