@@ -26,7 +26,7 @@
 		/// </summary>
 		/// <param name="data">The params to pass with the request.</param>
 		/// <returns>Returns a response. Succcessful requests will return the new user.</returns>
-		public string Create(Newtonsoft.Json.Linq.JObject data) {
+		public dynamic Create(dynamic data) {
 			this.Request("POST", this.Uri(), data).Wait();
 			return this.api_response;
 		}
@@ -37,7 +37,7 @@
 		/// <param name="user_id">The user's user_id.</param>
 		/// <param name="data">The params to pass with the request.</param>
 		/// <returns>Returns a response. Successful requests will return the updated user.</returns>
-		public string Update(string user_id, Newtonsoft.Json.Linq.JObject data) {
+		public dynamic Update(string user_id, dynamic data) {
 			this.Request("POST", this.Uri(user_id), data).Wait();
 			return this.api_response;
 		}

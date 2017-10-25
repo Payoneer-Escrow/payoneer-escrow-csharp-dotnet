@@ -39,9 +39,9 @@
 		/// <param name="authenticator">The authenticator object.</param>
 		/// <param name="uri_root">The resource's root URI.</param>
 		protected Resource(string host, PayoneerEscrow.Api.Authenticator authenticator, string uri_root) {
-			this.host = host;
+			this.host          = host;
 			this.authenticator = authenticator;
-			this.uri_root = uri_root;
+			this.uri_root      = uri_root;
 		}
 
 		///////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@
 			string uri = string.IsNullOrEmpty(object_id)
 				? ""
 				: ("/" + object_id);
-            return this.uri_root + "/" + ResourceName() + uri;
+            return this.uri_root + "/" + this.ResourceName() + uri;
 		}
 
 		/// <summary>
@@ -95,64 +95,48 @@
 			System.Net.Http.HttpRequestMessage request   = new System.Net.Http.HttpRequestMessage();
 			System.Net.Http.HttpResponseMessage response = null;
 
-			// Set the default request headers
+			// Set the request headers
+			System.Collections.Generic.Dictionary<string, string> secureHeaders = this.authenticator.SecureHeaders(method, uri);
 			client.DefaultRequestHeaders.Accept.Clear();
+			client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+			client.DefaultRequestHeaders.Add("X-ARMORPAYMENTS-APIKEY",           secureHeaders["X-ARMORPAYMENTS-APIKEY"]);
+			client.DefaultRequestHeaders.Add("X-ARMORPAYMENTS-REQUESTTIMESTAMP", secureHeaders["X-ARMORPAYMENTS-REQUESTTIMESTAMP"]);
+			client.DefaultRequestHeaders.Add("X-ARMORPAYMENTS-SIGNATURE",        secureHeaders["X-ARMORPAYMENTS-SIGNATURE"]);
 
 			// Create the full URL
 			string url = this.host + uri;
 
-			// Setup the POST params if any
-			if (data != null) {
-				data = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-			}
-
 			// What kind of request is being sent? Set the correct one.
 			switch (method.ToUpper()) {
-				case "DELETE":
-					break;
 				case "GET":
-					client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 					request.Method = System.Net.Http.HttpMethod.Get;
 					request.RequestUri = new System.Uri(url);
 					// Are there any query/request params to attach?
 					string queryParams = null;
-					if (data != null)
-					{
-						foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> set in data)
-						{
+					if (data != null) {
+						foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> set in data) {
 							queryParams += ($"{set.Key}={set.Value}");
 						}
-						if (!string.IsNullOrEmpty(queryParams))
-						{
+						if (!string.IsNullOrEmpty(queryParams)) {
 							url += ($"?{queryParams}");
 						}
 					}
-					request = this.AddSecureHeaders(method, uri, request);
 					response = await client.SendAsync(request);
-					this.api_response = await response.Content.ReadAsStringAsync();
-					this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
 					break;
 				case "POST":
-					request.Content = data;
-					request = this.AddSecureHeaders(method, uri, request);
-					response        = await client.PostAsync(url, request.Content);
-					this.api_response = await response.Content.ReadAsStringAsync();
-					this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
-					break;
-				case "PUT":
-					request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Put, url);
+					if (data != null) {
+						data            = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+						request.Content = new System.Net.Http.StringContent(data, System.Text.Encoding.UTF8, "application/json");
+					}
+					response = await client.PostAsync(url, request.Content);
 					break;
 				default:
 					throw new System.Exception("HTTP method not found.");
 			}
-		}
 
-		protected System.Net.Http.HttpRequestMessage AddSecureHeaders(string method, string uri, System.Net.Http.HttpRequestMessage request) {
-			System.Collections.Generic.Dictionary<string, string> secureHeaders = this.authenticator.SecureHeaders(method, uri);
-			request.Headers.Add("X-ARMORPAYMENTS-APIKEY", secureHeaders["X-ARMORPAYMENTS-APIKEY"]);
-			request.Headers.Add("X-ARMORPAYMENTS-REQUESTTIMESTAMP", secureHeaders["X-ARMORPAYMENTS-REQUESTTIMESTAMP"]);
-			request.Headers.Add("X-ARMORPAYMENTS-SIGNATURE", secureHeaders["X-ARMORPAYMENTS-SIGNATURE"]);
-			return request;
+			// Deserialize the JSON string that was returned from the request
+			this.api_response = await response.Content.ReadAsStringAsync();
+			this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
 		}
 
 		/// <summary>

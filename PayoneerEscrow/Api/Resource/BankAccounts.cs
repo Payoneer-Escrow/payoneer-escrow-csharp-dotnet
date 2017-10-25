@@ -26,7 +26,7 @@
 		/// </summary>
 		/// <param name="data">The params to pass with the request.</param>
 		/// <returns></returns>
-		public string Create(Newtonsoft.Json.Linq.JObject data) {
+		public dynamic Create(dynamic data) {
 			this.Request("POST", this.Uri(), data).Wait();
 			return this.api_response;
 		}
