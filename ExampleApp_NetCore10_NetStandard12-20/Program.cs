@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace ExampleApp_NetCore10_NetStandard12_20
+namespace ExampleApp_NetCore20_NetStandard12_20
 {
 	class Program
 	{
@@ -55,13 +55,13 @@ namespace ExampleApp_NetCore10_NetStandard12_20
 			 * This example shows that a Dictionary can be used
 			 */
 			Console.WriteLine("\n\nCreate an order...\n\n");
-			Dictionary<string, string> params_orderCreate = new Dictionary<string, string>{
+			Dictionary<string, string> params_orderCreate = new Dictionary<string, string> {
 				{ "seller_id", "seller_user_id" },
 				{ "buyer_id",  "buyer_user_id" },
 				{ "amount",    "10000" },
 				{ "summary",   "Test Order from Payoneer Escrow C#.NET SDK" }
 			};
-			dynamic entity_orderCreated = client.Accounts().Orders("account_id").Create(params_orderCreate);
+			dynamic entity_orderCreated = client.Accounts().Orders("account_id").Create((dynamic)params_orderCreate);
 			Console.WriteLine(entity_orderCreated);
 
 			/**
@@ -84,6 +84,7 @@ namespace ExampleApp_NetCore10_NetStandard12_20
 			 * 
 			 * This example shows that an anonymous object can be used
 			 */
+			Console.WriteLine("\n\nUpdate an account...\n\n");
 			var params_accountUpdate = new
 			{
 				address = "1234 Address Street",
@@ -93,7 +94,7 @@ namespace ExampleApp_NetCore10_NetStandard12_20
 				state = "CA",
 				country = "us",
 			};
-			dynamic entity_accountUpdated = client.Accounts().Update("account_id", params_accountUpdate);
+			dynamic entity_accountUpdated = client.Accounts().Update("account_id", (dynamic)params_accountUpdate);
 			Console.WriteLine(entity_accountUpdated);
 
 			// Keep app open

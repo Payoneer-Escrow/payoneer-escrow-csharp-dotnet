@@ -84,6 +84,7 @@ namespace ExampleApp_NetFramework462_NetStandard15
 			 * 
 			 * This example shows that an anonymous object can be used
 			 */
+			Console.WriteLine("\n\nUpdate an account...\n\n");
 			var params_accountUpdate = new
 			{
 				address = "1234 Address Street",
