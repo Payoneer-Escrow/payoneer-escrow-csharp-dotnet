@@ -26,7 +26,7 @@
 		/// </summary>
 		/// <param name="data">The params to pass with the request.</param>
 		/// <returns>Returns a response. Successful requests will return the new order.</returns>
-		public object Create(Newtonsoft.Json.Linq.JObject data) {
+		public dynamic Create(dynamic data) {
 			this.Request("POST", this.Uri(), data).Wait();
 			return this.api_response;
 		}
@@ -37,7 +37,7 @@
 		/// <param name="order_id">The orders's order_id.</param>
 		/// <param name="data">The params to pass with the request.</param>
 		/// <returns>Returns a response. Successful requests will return the updated order.</returns>
-		public object Update(string order_id, Newtonsoft.Json.Linq.JObject data) {
+		public dynamic Update(string order_id, dynamic data) {
 			this.Request("POST", this.Uri(order_id), data).Wait();
 			return this.api_response;
 		}

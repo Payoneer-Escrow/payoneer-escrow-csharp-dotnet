@@ -89,59 +89,70 @@
 		/// <param name="uri">The URI to use for the request.</param>
 		/// <param name="data">(optional) The data to pass with the request.</param>
 		/// <returns></returns>
-		protected async System.Threading.Tasks.Task Request(string method, string uri, Newtonsoft.Json.Linq.JObject data = null) {
-			// Get a new HttpClient
-			System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
+		protected async System.Threading.Tasks.Task Request(string method, string uri, dynamic data = null) {
+			// Get a new HttpClient and declare HttpRequestMessage
+			System.Net.Http.HttpClient client            = new System.Net.Http.HttpClient();
+			System.Net.Http.HttpRequestMessage request   = new System.Net.Http.HttpRequestMessage();
+			System.Net.Http.HttpResponseMessage response = null;
 
 			// Set the default request headers
 			client.DefaultRequestHeaders.Accept.Clear();
-			client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
 			// Create the full URL
 			string url = this.host + uri;
 
+			// Setup the POST params if any
+			if (data != null) {
+				data = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+			}
+
 			// What kind of request is being sent? Set the correct one.
-			System.Net.Http.HttpRequestMessage request = null;
 			switch (method.ToUpper()) {
 				case "DELETE":
 					break;
 				case "GET":
-					request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, url);
+					client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+					request.Method = System.Net.Http.HttpMethod.Get;
+					request.RequestUri = new System.Uri(url);
+					// Are there any query/request params to attach?
+					string queryParams = null;
+					if (data != null)
+					{
+						foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> set in data)
+						{
+							queryParams += ($"{set.Key}={set.Value}");
+						}
+						if (!string.IsNullOrEmpty(queryParams))
+						{
+							url += ($"?{queryParams}");
+						}
+					}
+					request = this.AddSecureHeaders(method, uri, request);
+					response = await client.SendAsync(request);
+					this.api_response = await response.Content.ReadAsStringAsync();
+					this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
 					break;
 				case "POST":
-					request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Post, url);
+					request.Content = data;
+					request = this.AddSecureHeaders(method, uri, request);
+					response        = await client.PostAsync(url, request.Content);
+					this.api_response = await response.Content.ReadAsStringAsync();
+					this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
 					break;
 				case "PUT":
 					request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Put, url);
 					break;
 				default:
-					break;
+					throw new System.Exception("HTTP method not found.");
 			}
+		}
 
-			// Are there any query/request params to attach?
-			string queryParams = null;
-			if (data != null) {
-				foreach (System.Collections.Generic.KeyValuePair<string, Newtonsoft.Json.Linq.JToken> set in data) {
-					queryParams += ($"{set.Key}={set.Value}");
-				}
-				if (!string.IsNullOrEmpty(queryParams)) {
-					url += ($"?{queryParams}");
-				}
-			}
-
-			// Set the secure request authentication headers
+		protected System.Net.Http.HttpRequestMessage AddSecureHeaders(string method, string uri, System.Net.Http.HttpRequestMessage request) {
 			System.Collections.Generic.Dictionary<string, string> secureHeaders = this.authenticator.SecureHeaders(method, uri);
 			request.Headers.Add("X-ARMORPAYMENTS-APIKEY", secureHeaders["X-ARMORPAYMENTS-APIKEY"]);
 			request.Headers.Add("X-ARMORPAYMENTS-REQUESTTIMESTAMP", secureHeaders["X-ARMORPAYMENTS-REQUESTTIMESTAMP"]);
 			request.Headers.Add("X-ARMORPAYMENTS-SIGNATURE", secureHeaders["X-ARMORPAYMENTS-SIGNATURE"]);
-
-			// Wait for the task to complete
-			System.Net.Http.HttpResponseMessage httpResponse = await client.SendAsync(request);
-
-			// Set this.api_response to the response received from the API.
-			// The caller will return this.api_response;
-			this.api_response = await httpResponse.Content.ReadAsStringAsync();
-			this.api_response = Newtonsoft.Json.JsonConvert.DeserializeObject(this.api_response);
+			return request;
 		}
 
 		/// <summary>

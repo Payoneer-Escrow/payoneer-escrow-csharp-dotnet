@@ -81,7 +81,7 @@
 		/// <returns>Returns the Payoneer Escrow hostname to use for requests.</returns>
 		protected string GetApiHostname() {
 			if (this.use_sandbox) {
-				return "https://sandbox.armorpayments.com";
+				return "http://dev.armorpayments.com";
 			}
 
 			return "https://pay.payoneer.com";
