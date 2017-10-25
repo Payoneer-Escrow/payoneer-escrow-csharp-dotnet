@@ -227,7 +227,7 @@ client.Accounts().Orders("account_id").Disputes("order_id").Offers("dispute_id")
 
 ### Making requests: POST
 
-```chsarp
+```csharp
 /**
  * Some of the resource endpoints support Create/Update POST operations, and
  * this client aims to support those as well. POST operations use the
