@@ -1,10 +1,12 @@
 # Payoneer Escrow
 
-This is intended to be a clean, idiomatic client for the [Armor Payments API](https://escrow.payoneer.com/api). This will handle generating the authenticated headers and constructing the properly nested request URI, as well as parsing any response JSON for you.
-
-Current package version: 1.0.0
+This is intended to be a clean, idiomatic client for the [Payoneer Escrow API](https://escrow.payoneer.com/api). This will handle generating the authenticated headers and constructing the properly nested request URI, as well as parsing any response JSON for you.
 
 ---
+
+## Package Versions
+
+* 1.0.0 (current)
 
 ## Dependencies
 
